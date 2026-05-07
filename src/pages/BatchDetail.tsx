@@ -27,7 +27,7 @@ export function BatchDetail() {
 
   useEffect(() => {
     if (activeSessionId) {
-      fetch(`/api/attendance/${activeSessionId}`).then(r => r.json()).then(setAttendanceRecords).catch(console.error);
+      fetch(getApiUrl(`/api/attendance/${activeSessionId}`)).then(r => r.json()).then(setAttendanceRecords).catch(console.error);
       const session = sessions.find(s => s.id === activeSessionId);
       setSessionNotes(session?.notes || '');
       setFocusedStudentIndex(-1);
@@ -53,7 +53,7 @@ export function BatchDetail() {
     e.preventDefault();
     if (!newStudent.name || !id) return;
     try {
-      await fetch(`/api/batches/${id}/students`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newStudent) });
+      await fetch(getApiUrl(`/api/batches/${id}/students`), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newStudent) });
       toast.success('Student added!');
       setShowAddStudent(false);
       setNewStudent({ name: '', email: '' });
@@ -65,7 +65,7 @@ export function BatchDetail() {
   const markAttendance = async (studentId: number, status: 'present' | 'absent') => {
     if (!activeSessionId || !id) return;
     try {
-      await fetch('/api/attendance', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ batchId: Number(id), sessionId: activeSessionId, studentId, status }) });
+      await fetch(getApiUrl('/api/attendance'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ batchId: Number(id), sessionId: activeSessionId, studentId, status }) });
       setAttendanceRecords(prev => ({ ...prev, [studentId]: status }));
     } catch { toast.error('Failed to mark attendance'); }
   };
@@ -74,7 +74,7 @@ export function BatchDetail() {
     if (!activeSessionId || !id || students.length === 0) return;
     const toastId = toast.loading(`Marking all ${status}...`);
     try {
-      await fetch('/api/attendance/bulk', {
+      await fetch(getApiUrl('/api/attendance/bulk'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ batchId: Number(id), sessionId: activeSessionId, studentIds: students.map(s => s.id), status })
       });
@@ -88,7 +88,7 @@ export function BatchDetail() {
   const saveSessionNotes = async () => {
     if (!activeSessionId) return;
     try {
-      await fetch(`/api/sessions/${activeSessionId}/notes`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ notes: sessionNotes }) });
+      await fetch(getApiUrl(`/api/sessions/${activeSessionId}/notes`), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ notes: sessionNotes }) });
       toast.success('Notes saved!');
       refreshSessions();
     } catch { toast.error('Failed to save notes'); }
@@ -122,7 +122,7 @@ export function BatchDetail() {
           {profile?.role === 'admin' && (
             <button onClick={async () => {
               if (window.confirm('Delete this batch permanently?')) {
-                await fetch(`/api/batches/${id}`, { method: 'DELETE' });
+                await fetch(getApiUrl(`/api/batches/${id}`), { method: 'DELETE' });
                 toast.success('Batch deleted');
                 window.location.href = '/batches';
               }

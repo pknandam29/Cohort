@@ -9,7 +9,7 @@ export function useBatches(search?: string, includeArchived?: boolean) {
       const params = new URLSearchParams();
       if (search) params.set('search', search);
       if (includeArchived) params.set('includeArchived', 'true');
-      const res = await fetch(`/api/batches?${params}`);
+      const res = await fetch(getApiUrl(`/api/batches?${params}`));
       const data = await res.json();
       setBatches(data);
     } catch (err) {
@@ -31,7 +31,7 @@ export function useBatchStudents(batchId?: string | number) {
   const fetchStudents = useCallback(async () => {
     if (!batchId) return;
     try {
-      const res = await fetch(`/api/batches/${batchId}/students`);
+      const res = await fetch(getApiUrl(`/api/batches/${batchId}/students`));
       setStudents(await res.json());
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -48,7 +48,7 @@ export function useBatchSessions(batchId?: string | number) {
   const fetchSessions = useCallback(async () => {
     if (!batchId) return;
     try {
-      const res = await fetch(`/api/batches/${batchId}/sessions`);
+      const res = await fetch(getApiUrl(`/api/batches/${batchId}/sessions`));
       setSessions(await res.json());
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -63,7 +63,7 @@ export function useUpcomingSessions(count: number = 5) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/sessions/upcoming').then(r => r.json()).then(d => setSessions(d.slice(0, count))).catch(console.error).finally(() => setLoading(false));
+    fetch(getApiUrl('/api/sessions/upcoming')).then(r => r.json()).then(d => setSessions(d.slice(0, count))).catch(console.error).finally(() => setLoading(false));
   }, [count]);
 
   return { sessions, loading };
@@ -74,7 +74,7 @@ export function useDashboardAlerts() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/dashboard/alerts').then(r => r.json()).then(setAlerts).catch(console.error).finally(() => setLoading(false));
+    fetch(getApiUrl('/api/dashboard/alerts')).then(r => r.json()).then(setAlerts).catch(console.error).finally(() => setLoading(false));
   }, []);
 
   return { alerts, loading };
@@ -85,7 +85,7 @@ export function useDashboardTrends() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/dashboard/trends').then(r => r.json()).then(setTrends).catch(console.error).finally(() => setLoading(false));
+    fetch(getApiUrl('/api/dashboard/trends')).then(r => r.json()).then(setTrends).catch(console.error).finally(() => setLoading(false));
   }, []);
 
   return { trends, loading };
@@ -96,7 +96,7 @@ export function useAuditLog() {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(() => {
-    fetch('/api/audit-log').then(r => r.json()).then(setLogs).catch(console.error).finally(() => setLoading(false));
+    fetch(getApiUrl('/api/audit-log')).then(r => r.json()).then(setLogs).catch(console.error).finally(() => setLoading(false));
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
@@ -108,7 +108,7 @@ export function useUsers() {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(() => {
-    fetch('/api/users').then(r => r.json()).then(setUsers).catch(console.error).finally(() => setLoading(false));
+    fetch(getApiUrl('/api/users')).then(r => r.json()).then(setUsers).catch(console.error).finally(() => setLoading(false));
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);

@@ -22,7 +22,7 @@ export function Batches() {
     e.preventDefault();
     if (!newBatch.name) return;
     try {
-      await fetch('/api/batches', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newBatch) });
+      await fetch(getApiUrl('/api/batches'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newBatch) });
       toast.success('Batch created with 12 sessions!');
       setShowAddModal(false);
       setNewBatch({ name: '', description: '', startDate: format(new Date(), 'yyyy-MM-dd') });
@@ -33,7 +33,7 @@ export function Batches() {
   const handleDeleteBatch = async (id: number) => {
     if (!window.confirm('Delete this batch permanently?')) return;
     try {
-      await fetch(`/api/batches/${id}`, { method: 'DELETE' });
+      await fetch(getApiUrl(`/api/batches/${id}`), { method: 'DELETE' });
       toast.success('Batch deleted');
       refresh();
     } catch { toast.error('Failed to delete'); }
@@ -41,7 +41,7 @@ export function Batches() {
 
   const handleArchiveBatch = async (id: number, archive: boolean) => {
     try {
-      await fetch(`/api/batches/${id}/archive`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ archived: archive }) });
+      await fetch(getApiUrl(`/api/batches/${id}/archive`), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ archived: archive }) });
       toast.success(archive ? 'Batch archived' : 'Batch restored');
       refresh();
     } catch { toast.error('Failed'); }

@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const newMode = !darkMode;
     setDarkMode(newMode);
     if (user) {
-      fetch(`/api/users/${user.id}/theme`, {
+      fetch(getApiUrl(`/api/users/${user.id}/theme`), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ theme: newMode ? 'dark' : 'light' }),
@@ -47,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const loginWithCredentials = async (username: string, password: string) => {
-    const res = await fetch('/api/login', {
+    const res = await fetch(getApiUrl('/api/login'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),

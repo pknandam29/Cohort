@@ -11,7 +11,7 @@ export function StudentDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/students/${id}`).then(r => r.json()).then(setStudent).catch(console.error).finally(() => setLoading(false));
+    fetch(getApiUrl(`/api/students/${id}`)).then(r => r.json()).then(setStudent).catch(console.error).finally(() => setLoading(false));
   }, [id]);
 
   if (loading) return <div className="animate-pulse text-center p-20">Loading student data...</div>;

@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { fileURLToPath } from "url";
@@ -9,7 +10,16 @@ const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.PORT || 3000;
+  
+  app.use(cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "https://cohort-beta-nine.vercel.app"
+    ],
+    credentials: true
+  }));
   app.use(express.json());
 
   // ── Auth ───────────────────────────────────────────────────────────────

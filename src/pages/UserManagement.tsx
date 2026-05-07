@@ -14,7 +14,7 @@ export function UserManagement() {
   const handleAddUser = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newUser) });
+      const res = await fetch(getApiUrl('/api/users'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newUser) });
       if (!res.ok) { const d = await res.json(); throw new Error(d.error); }
       toast.success('User created!');
       setShowAddModal(false);
@@ -26,7 +26,7 @@ export function UserManagement() {
   const handleDeleteUser = async (id: number) => {
     if (!window.confirm('Delete this user?')) return;
     try {
-      await fetch(`/api/users/${id}`, { method: 'DELETE' });
+      await fetch(getApiUrl(`/api/users/${id}`), { method: 'DELETE' });
       toast.success('User deleted');
       refresh();
     } catch { toast.error('Failed'); }
