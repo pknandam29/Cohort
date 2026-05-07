@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { getApiUrl } from '..\lib\api';\nimport { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ChevronLeft, CheckCircle2, XCircle } from 'lucide-react';

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { getApiUrl } from '..\lib\api';\nimport { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface UserProfile {
   id: number;

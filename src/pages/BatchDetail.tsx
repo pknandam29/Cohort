@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { getApiUrl } from '..\lib\api';\nimport { useParams, Link } from 'react-router-dom';
 import { useBatches, useBatchStudents, useBatchSessions } from '../hooks/useData';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'motion/react';
